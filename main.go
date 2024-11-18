@@ -1,7 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/gommon/log"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+	e := echo.New()
+	e.Use(middleware.Recover())
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+
+	log.Fatal(e.Start(":8080"))
 }
