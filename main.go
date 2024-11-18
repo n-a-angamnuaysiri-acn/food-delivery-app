@@ -9,11 +9,11 @@ import (
 )
 
 func main() {
-	e := echo.New()
-	e.Use(middleware.Recover())
-	e.GET("/", func(c echo.Context) error {
+	app := echo.New()
+	app.Use(middleware.Recover())
+	app.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	log.Fatal(e.Start(":8080"))
+	log.Fatal(app.Start(":8080"))
 }
