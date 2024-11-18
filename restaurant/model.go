@@ -10,10 +10,6 @@ type Restaurant struct {
 	Menu []Menu `json:"menu"`
 }
 
-var Restaurants = []Restaurant{
-
-}
-
 type Menu struct {
 	BaseData
 	Price       float64 `json:"price"`
