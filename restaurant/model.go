@@ -7,7 +7,7 @@ type BaseData struct {
 
 type Restaurant struct {
 	BaseData
-	Menu []Menu `json:"menu"`
+	Menu []Menu `gorm:"foreignKey:Id" json:"menu"`
 }
 
 type Menu struct {
