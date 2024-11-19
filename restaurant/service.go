@@ -5,19 +5,15 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
-	"github.com/n-a-angamnuaysiri-acn/food-delivery-app/config"
 )
 
 func GetRestaurants(ctx echo.Context) error {
 	log.Info("Get All Restaurants Data")
-	db := config.Database()
+	restaurants, err := FindAll()
 
-	var restaurants []*Restaurant 
-	dbResponse := db.Find(&restaurants)
-
-	if dbResponse.Error != nil {
+	if err != nil {
 		data := map[string]interface{}{
-			"message": dbResponse.Error.Error(),
+			"message": err.Error(),
 		}
 		return ctx.JSON(http.StatusOK, data)
 	}
