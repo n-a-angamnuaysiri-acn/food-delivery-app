@@ -2,9 +2,8 @@ package rider
 
 import "github.com/n-a-angamnuaysiri-acn/food-delivery-app/config"
 
-var db = config.Database()
-
 func FindAll() ([]*Rider, error) {
+	var db = config.Database()
 	var riders []*Rider
 	dbResponse := db.Find(&riders)
 

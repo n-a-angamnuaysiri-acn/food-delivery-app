@@ -21,6 +21,7 @@ func main() {
 	})
 	app.GET("/restaurant", restaurant.GetRestaurants)
 	app.GET("/rider", rider.GetRiders)
+	app.GET("/menu", restaurant.GetMenu)
 
 	// Connect To Database
 	config.DatabaseInit()
