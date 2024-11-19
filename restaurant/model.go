@@ -1,21 +1,18 @@
 package restaurant
 
-type BaseData struct {
-	Id   uint   `gorm:"primaryKey" json:"id"`
-	Name string `json:"name"`
-}
+import "github.com/n-a-angamnuaysiri-acn/food-delivery-app/common"
 
 type Restaurant struct {
-	BaseData
+	common.BaseData
 	Menu []Menu `gorm:"foreignKey:Id" json:"menu"`
 }
 
 type Menu struct {
-	BaseData
+	common.BaseData
 	Price       float64 `json:"price"`
 	Description string  `json:"description"`
 }
 
 type GetRestaurantsResponse struct {
-	Restaurants []BaseData `json:"restaurants"`
+	Restaurants []common.BaseData `json:"restaurants"`
 }
