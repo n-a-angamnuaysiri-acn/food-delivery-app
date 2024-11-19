@@ -6,7 +6,7 @@ import (
 	"github.com/n-a-angamnuaysiri-acn/food-delivery-app/config"
 )
 
-func FindAll() ([]Restaurant, error) {
+func FindAll() (*[]Restaurant, error) {
 	var db = config.Database()
 	var restaurantsDB *[]RestaurantDB
 	dbResponse := db.Find(&restaurantsDB)
@@ -23,7 +23,7 @@ func FindAll() ([]Restaurant, error) {
 		}
 		restaurants = append(restaurants, Restaurant{BaseData: r.BaseData, Menu: menu})
 	}
-	return restaurants, nil
+	return &restaurants, nil
 }
 
 func FindById(id uint) (*Restaurant, error) {

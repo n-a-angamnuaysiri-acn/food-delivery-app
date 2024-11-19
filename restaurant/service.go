@@ -20,7 +20,7 @@ func GetRestaurants(ctx echo.Context) error {
 	}
 
 	var response GetRestaurantsResponse
-	response.AddRestaurants(restaurants)
+	response.AddRestaurants(*restaurants)
 	return ctx.JSON(http.StatusOK, response)
 }
 
@@ -44,7 +44,7 @@ func GetMenu(ctx echo.Context) error {
 		}
 		return ctx.JSON(http.StatusOK, data)
 	}
-	
+
 	response := GetMenuResponse{RestaurantId: restaurant.Id, Menu: restaurant.Menu}
 	return ctx.JSON(http.StatusOK, response)
 }
