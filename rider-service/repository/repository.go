@@ -1,10 +1,13 @@
-package rider
+package repository
 
-import "github.com/n-a-angamnuaysiri-acn/food-delivery-app/config"
+import (
+	"rider-service/config"
+	"rider-service/model"
+)
 
-func FindAll() ([]*Rider, error) {
+func FindAll() ([]*model.Rider, error) {
 	var db = config.Database()
-	var riders []*Rider
+	var riders []*model.Rider
 	dbResponse := db.Find(&riders)
 
 	if dbResponse.Error != nil {

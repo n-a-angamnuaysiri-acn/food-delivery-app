@@ -6,9 +6,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
-	"github.com/n-a-angamnuaysiri-acn/food-delivery-app/config"
-	"github.com/n-a-angamnuaysiri-acn/food-delivery-app/restaurant"
-	"github.com/n-a-angamnuaysiri-acn/food-delivery-app/rider"
+	"restaurant-service/config"
+	"restaurant-service/service"
 )
 
 func main() {
@@ -19,9 +18,8 @@ func main() {
 	app.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
-	app.GET("/restaurant", restaurant.GetRestaurants)
-	app.GET("/rider", rider.GetRiders)
-	app.GET("/menu", restaurant.GetMenu)
+	app.GET("/restaurant", service.GetRestaurants)
+	app.GET("/menu", service.GetMenu)
 
 	// Connect To Database
 	config.DatabaseInit()
@@ -34,5 +32,6 @@ func main() {
 
 	dbGorm.Ping()
 
-	log.Fatal(app.Start(":8080"))
+	log.Fatal(app.Start(":8082"))
 }
+

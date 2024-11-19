@@ -1,4 +1,4 @@
-package restaurant
+package service
 
 import (
 	"net/http"
@@ -6,11 +6,13 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
+	"restaurant-service/model"
+	"restaurant-service/repository"
 )
 
 func GetRestaurants(ctx echo.Context) error {
 	log.Info("Get All Restaurants Data")
-	restaurants, err := FindAll()
+	restaurants, err := repository.FindAll()
 
 	if err != nil {
 		data := map[string]interface{}{
@@ -19,7 +21,7 @@ func GetRestaurants(ctx echo.Context) error {
 		return ctx.JSON(http.StatusOK, data)
 	}
 
-	var response GetRestaurantsResponse
+	var response model.GetRestaurantsResponse
 	response.AddRestaurants(*restaurants)
 	return ctx.JSON(http.StatusOK, response)
 }
@@ -37,7 +39,7 @@ func GetMenu(ctx echo.Context) error {
 		log.Error(err)
 		return echo.ErrBadRequest
 	}
-	restaurant, err := FindById(uint(idInt))
+	restaurant, err := repository.FindById(uint(idInt))
 	if err != nil {
 		data := map[string]interface{}{
 			"message": err.Error(),
@@ -45,6 +47,6 @@ func GetMenu(ctx echo.Context) error {
 		return ctx.JSON(http.StatusOK, data)
 	}
 
-	response := GetMenuResponse{RestaurantId: restaurant.Id, Menu: restaurant.Menu}
+	response := model.GetMenuResponse{RestaurantId: restaurant.Id, Menu: restaurant.Menu}
 	return ctx.JSON(http.StatusOK, response)
 }

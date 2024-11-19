@@ -1,42 +1,45 @@
-package restaurant
+package repository
 
 import (
 	"encoding/json"
 
-	"github.com/n-a-angamnuaysiri-acn/food-delivery-app/config"
+	"github.com/labstack/gommon/log"
+	"restaurant-service/config"
+	"restaurant-service/model"
 )
 
-func FindAll() (*[]Restaurant, error) {
+func FindAll() (*[]model.Restaurant, error) {
 	var db = config.Database()
-	var restaurantsDB *[]RestaurantDB
+	var restaurantsDB *[]model.RestaurantDB
 	dbResponse := db.Find(&restaurantsDB)
 
 	if dbResponse.Error != nil {
 		return nil, dbResponse.Error
 	}
-	var restaurants []Restaurant
+	var restaurants []model.Restaurant
 	for _, r := range *restaurantsDB {
-		var menu []Menu
+		var menu []model.Menu
 		err := json.Unmarshal([]byte(r.Menu), &menu)
 		if err != nil {
 			return nil, err
 		}
-		restaurants = append(restaurants, Restaurant{BaseData: r.BaseData, Menu: menu})
+		restaurants = append(restaurants, model.Restaurant{BaseData: r.BaseData, Menu: menu})
 	}
 	return &restaurants, nil
 }
 
-func FindById(id uint) (*Restaurant, error) {
+func FindById(id uint) (*model.Restaurant, error) {
 	var db = config.Database()
-	var restaurant *RestaurantDB
+	var restaurant *model.RestaurantDB
 	dbResponse := db.Find(&restaurant, "id = ?", id)
 	if dbResponse.Error != nil {
 		return nil, dbResponse.Error
 	}
-	var menu []Menu
+	var menu []model.Menu
 	err := json.Unmarshal([]byte(restaurant.Menu), &menu)
 	if err != nil {
+		log.Error(err)
 		return nil, err
 	}
-	return &Restaurant{BaseData: restaurant.BaseData, Menu: menu}, nil
+	return &model.Restaurant{BaseData: restaurant.BaseData, Menu: menu}, nil
 }

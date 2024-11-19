@@ -1,9 +1,12 @@
-package restaurant
+package model
 
-import "github.com/n-a-angamnuaysiri-acn/food-delivery-app/common"
+type BaseData struct {
+	Id   uint   `gorm:"primaryKey" json:"id"`
+	Name string `json:"name"`
+}
 
 type RestaurantDB struct {
-	common.BaseData
+	BaseData
 	Menu string `gorm:"default:[]"`
 }
 
@@ -12,18 +15,18 @@ func (RestaurantDB) TableName() string {
 }
 
 type Restaurant struct {
-	common.BaseData
+	BaseData
 	Menu []Menu `json:"menu"`
 }
 
 type Menu struct {
-	common.BaseData
+	BaseData
 	Price       float64 `json:"price"`
 	Description string  `json:"description"`
 }
 
 type GetRestaurantsResponse struct {
-	Restaurants []common.BaseData `json:"restaurant"`
+	Restaurants []BaseData `json:"restaurant"`
 }
 
 func (resp *GetRestaurantsResponse) AddRestaurants(restaurants []Restaurant) {

@@ -1,4 +1,4 @@
-module github.com/n-a-angamnuaysiri-acn/food-delivery-app
+module rider-service
 
 go 1.23.3
 

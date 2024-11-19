@@ -1,9 +1,12 @@
-package rider
+package model
 
-import "github.com/n-a-angamnuaysiri-acn/food-delivery-app/common"
+type BaseData struct {
+	Id   uint   `gorm:"primaryKey" json:"id"`
+	Name string `json:"name"`
+}
 
 type Rider struct {
-	common.BaseData
+	BaseData
 }
 
 type GetRidersResponse struct {
