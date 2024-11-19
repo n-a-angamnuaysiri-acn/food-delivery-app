@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/n-a-angamnuaysiri-acn/food-delivery-app/config"
 	"github.com/n-a-angamnuaysiri-acn/food-delivery-app/restaurant"
+	"github.com/n-a-angamnuaysiri-acn/food-delivery-app/rider"
 )
 
 func main() {
@@ -19,6 +20,7 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 	app.GET("/restaurant", restaurant.GetRestaurants)
+	app.GET("/rider", rider.GetRiders)
 
 	// Connect To Database
 	config.DatabaseInit()
