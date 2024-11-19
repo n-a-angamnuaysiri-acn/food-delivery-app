@@ -14,5 +14,11 @@ type Menu struct {
 }
 
 type GetRestaurantsResponse struct {
-	Restaurants []common.BaseData `json:"restaurants"`
+	Restaurants []common.BaseData `json:"restaurant"`
+}
+
+func (resp *GetRestaurantsResponse) AddRestaurants(restaurants []*Restaurant) {
+	for _, r := range restaurants {
+		resp.Restaurants = append(resp.Restaurants, r.BaseData)
+	}
 }

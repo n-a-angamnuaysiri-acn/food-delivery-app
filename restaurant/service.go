@@ -23,9 +23,6 @@ func GetRestaurants(ctx echo.Context) error {
 	}
 	
 	var response  GetRestaurantsResponse
-	
-	for _, r := range restaurants {
-		response.Restaurants = append(response.Restaurants, r.BaseData)
-	}
+	response.AddRestaurants(restaurants)
 	return ctx.JSON(http.StatusOK, response)
 }
