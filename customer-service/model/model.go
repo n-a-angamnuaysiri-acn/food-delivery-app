@@ -3,6 +3,7 @@ package model
 type Order struct {
 	Id           uint   `gorm:"primaryKey" json:"id"`
 	RestaurantId string `json:"restaurant_id"`
+	RiderId      string `json:"rider_id"`
 	Items        string `gorm:"default:[]"`
 	Status       string `json:"status"`
 }

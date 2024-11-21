@@ -7,7 +7,6 @@ type BaseData struct {
 
 type Rider struct {
 	BaseData
-	Orders []string `json:"order,omitempty"`
 }
 
 type GetRidersResponse struct {
