@@ -19,6 +19,8 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 	app.GET("/rider", service.GetRiders)
+	app.POST("/rider/order/pickup", service.PickUpOrder)
+	app.POST("/rider/order/deliver", service.DeliverOrder)
 
 	// Connect To Database
 	config.DatabaseInit()

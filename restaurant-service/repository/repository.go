@@ -52,7 +52,12 @@ func AcceptingOrder(request model.AcceptOrderRequest) (*model.Order, error)  {
 	if dbResponse.Error != nil {
 		return nil, dbResponse.Error
 	}
-	dbResponse = db.Model(&order).Update("status", "accepted")
+	return UpdateOrderStatus(order, "accepted")
+}
+
+func UpdateOrderStatus(order *model.Order, status string) (*model.Order, error)  {
+	var db = config.Database()
+	dbResponse := db.Model(&order).Update("status", "accepted")
 	if dbResponse.Error != nil {
 		return nil, dbResponse.Error
 	}
