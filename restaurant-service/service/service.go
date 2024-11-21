@@ -16,6 +16,7 @@ func GetRestaurants(ctx echo.Context) error {
 	restaurants, err := repository.FindAllRestaurant()
 
 	if err != nil {
+		log.Error(err)
 		data := map[string]interface{}{
 			"message": err.Error(),
 		}

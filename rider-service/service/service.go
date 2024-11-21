@@ -16,6 +16,7 @@ func GetRiders(ctx echo.Context) error {
 	riders, err := repository.FindAllRider()
 
 	if err != nil {
+		log.Error(err)
 		data := map[string]interface{}{
 			"message": err.Error(),
 		}
