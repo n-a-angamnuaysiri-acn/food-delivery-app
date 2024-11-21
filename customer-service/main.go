@@ -2,6 +2,7 @@ package main
 
 import (
 	"customer-service/config"
+	"customer-service/service"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -17,6 +18,7 @@ func main() {
 	app.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
+	app.POST("/order", service.PlaceOrder)
 
 	// Connect To Database
 	config.DatabaseInit()
