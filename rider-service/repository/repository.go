@@ -5,7 +5,7 @@ import (
 	"rider-service/model"
 )
 
-func FindAll() ([]*model.Rider, error) {
+func FindAllRider() ([]*model.Rider, error) {
 	var db = config.Database()
 	var riders []*model.Rider
 	dbResponse := db.Find(&riders)

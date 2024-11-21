@@ -4,15 +4,16 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 	"restaurant-service/model"
 	"restaurant-service/repository"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 )
 
 func GetRestaurants(ctx echo.Context) error {
 	log.Info("Get All Restaurants Data")
-	restaurants, err := repository.FindAll()
+	restaurants, err := repository.FindAllRestaurant()
 
 	if err != nil {
 		data := map[string]interface{}{
@@ -39,7 +40,7 @@ func GetMenu(ctx echo.Context) error {
 		log.Error(err)
 		return echo.ErrBadRequest
 	}
-	restaurant, err := repository.FindById(uint(idInt))
+	restaurant, err := repository.FindRestaurantById(uint(idInt))
 	if err != nil {
 		data := map[string]interface{}{
 			"message": err.Error(),

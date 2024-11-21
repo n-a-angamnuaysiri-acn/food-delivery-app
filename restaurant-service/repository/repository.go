@@ -3,12 +3,13 @@ package repository
 import (
 	"encoding/json"
 
-	"github.com/labstack/gommon/log"
 	"restaurant-service/config"
 	"restaurant-service/model"
+
+	"github.com/labstack/gommon/log"
 )
 
-func FindAll() (*[]model.Restaurant, error) {
+func FindAllRestaurant() (*[]model.Restaurant, error) {
 	var db = config.Database()
 	var restaurantsDB *[]model.RestaurantDB
 	dbResponse := db.Find(&restaurantsDB)
@@ -28,7 +29,7 @@ func FindAll() (*[]model.Restaurant, error) {
 	return &restaurants, nil
 }
 
-func FindById(id uint) (*model.Restaurant, error) {
+func FindRestaurantById(id uint) (*model.Restaurant, error) {
 	var db = config.Database()
 	var restaurant *model.RestaurantDB
 	dbResponse := db.Find(&restaurant, "id = ?", id)
