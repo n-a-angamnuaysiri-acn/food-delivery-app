@@ -20,6 +20,8 @@ func main() {
 	})
 	app.GET("/restaurant", service.GetRestaurants)
 	app.GET("/menu", service.GetMenu)
+	app.POST("/restaurant/order/accept", service.AcceptingOrder)
+	
 
 	// Connect To Database
 	config.DatabaseInit()
