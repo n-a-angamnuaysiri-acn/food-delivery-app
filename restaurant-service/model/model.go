@@ -39,3 +39,16 @@ type GetMenuResponse struct {
 	RestaurantId uint   `json:"restaurant_id"`
 	Menu         []Menu `json:"menu"`
 }
+
+type Order struct {
+	Id           uint   `gorm:"primaryKey" json:"id"`
+	RestaurantId string `json:"restaurant_id"`
+	RiderId      string `json:"rider_id"`
+	Items        string `gorm:"default:[]"`
+	Status       string `json:"status"`
+}
+
+type AcceptOrderRequest struct {
+	OrderId string `json:"order_id"`
+	RestaurantId string `json:"restaurant_id"`
+}

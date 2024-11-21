@@ -44,3 +44,18 @@ func FindRestaurantById(id uint) (*model.Restaurant, error) {
 	}
 	return &model.Restaurant{BaseData: restaurant.BaseData, Menu: menu}, nil
 }
+
+func AcceptingOrder(request model.AcceptOrderRequest) (*model.Order, error)  {
+	var db = config.Database()
+	var order *model.Order
+	dbResponse := db.Where("id = ? AND restaurantId = ?", request.OrderId, request.RestaurantId).Find(&order)
+	if dbResponse.Error != nil {
+		return nil, dbResponse.Error
+	}
+	dbResponse = db.Model(&order).Update("status", "accepted")
+	if dbResponse.Error != nil {
+		return nil, dbResponse.Error
+	}
+	order.Status = "accepted"
+	return order, nil
+}

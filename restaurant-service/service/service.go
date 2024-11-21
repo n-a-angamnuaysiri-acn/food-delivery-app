@@ -52,3 +52,21 @@ func GetMenu(ctx echo.Context) error {
 	response := model.GetMenuResponse{RestaurantId: restaurant.Id, Menu: restaurant.Menu}
 	return ctx.JSON(http.StatusOK, response)
 }
+
+func AcceptingOrder(ctx echo.Context) error {
+	var request model.AcceptOrderRequest
+	err := ctx.Bind(&request)
+	if err != nil {
+		log.Error(err)
+		return echo.ErrBadRequest
+	}
+	order, err := repository.AcceptingOrder(request)
+	if err != nil {
+		log.Error(err)
+		data := map[string]interface{}{
+			"message": err.Error(),
+		}
+		return ctx.JSON(http.StatusOK, data)
+	}
+	return ctx.JSON(http.StatusOK, map[string]string{"status": order.Status})
+}
