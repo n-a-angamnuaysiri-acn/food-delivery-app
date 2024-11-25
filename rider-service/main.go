@@ -1,7 +1,11 @@
 package main
 
 import (
+	"context"
 	"net/http"
+	"os"
+	"os/signal"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -11,6 +15,21 @@ import (
 )
 
 func main() {
+	// Connect To Database
+	go func() {
+		config.DatabaseInit()
+		gorm := config.Database()
+
+		dbGorm, err := gorm.DB()
+		if err != nil {
+			panic(err)
+		}
+		err = dbGorm.Ping()
+		if err != nil {
+			panic(err)
+		}
+	}()
+
 	app := echo.New()
 	app.Use(middleware.Recover())
 	app.Use(middleware.Logger())
@@ -22,16 +41,21 @@ func main() {
 	app.POST("/rider/order/pickup", service.PickUpOrder)
 	app.POST("/rider/order/deliver", service.DeliverOrder)
 
-	// Connect To Database
-	config.DatabaseInit()
-	gorm := config.Database()
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
 
-	dbGorm, err := gorm.DB()
-	if err != nil {
-		panic(err)
+	// Start server
+	go func() {
+		if err := app.Start(":8084"); err != nil && err != http.ErrServerClosed {
+			log.Fatal("shutting down the server")
+		}
+	}()
+
+	// Wait for interrupt signal to gracefully shut down the server with a timeout of 10 seconds.
+	<-ctx.Done()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := app.Shutdown(ctx); err != nil {
+		log.Fatal(err)
 	}
-
-	dbGorm.Ping()
-
-	log.Fatal(app.Start(":8084"))
 }
