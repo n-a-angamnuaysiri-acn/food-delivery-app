@@ -7,11 +7,13 @@ import (
 	"os/signal"
 	"time"
 
+	"restaurant-service/client"
+	"restaurant-service/config"
+	"restaurant-service/service"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
-	"restaurant-service/config"
-	"restaurant-service/service"
 )
 
 func main() {
@@ -51,8 +53,13 @@ func main() {
 		}
 	}()
 
+	// start listening for Notifications
+	doneListening := make(chan bool)
+	go client.ListenForNotification(doneListening)
+
 	// Wait for interrupt signal to gracefully shut down the server with a timeout of 10 seconds.
 	<-ctx.Done()
+	close(doneListening) 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := app.Shutdown(ctx); err != nil {
