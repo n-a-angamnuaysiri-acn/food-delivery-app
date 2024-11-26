@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"customer-service/config"
+	"customer-service/client"
 	"customer-service/service"
 	"net/http"
 	"os"
@@ -49,6 +50,10 @@ func main() {
 			log.Fatal("shutting down the server")
 		}
 	}()
+
+	// start listening for Notifications
+	doneListening := make(chan bool)
+	go client.ListenForNotification(doneListening)
 
 	// Wait for interrupt signal to gracefully shut down the server with a timeout of 10 seconds.
 	<-ctx.Done()
