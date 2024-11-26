@@ -32,3 +32,19 @@ func CreateNewOrder(request model.PlaceOrderResquest) (*model.Order, error) {
 	return &order, nil
 }
 
+
+func FindRestaurantById(id string) (*model.Restaurant, error) {
+	var db = config.Database()
+	var restaurant *model.RestaurantDB
+	dbResponse := db.Find(&restaurant, "id = ?", id)
+	if dbResponse.Error != nil {
+		return nil, dbResponse.Error
+	}
+	var menu []model.Menu
+	err := json.Unmarshal([]byte(restaurant.Menu), &menu)
+	if err != nil {
+		return nil, err
+	}
+	return &model.Restaurant{BaseData: restaurant.BaseData, Menu: menu}, nil
+}
+
