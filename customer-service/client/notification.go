@@ -2,7 +2,6 @@ package client
 
 import (
 	"bytes"
-	"customer-service/config"
 	"customer-service/model"
 	"encoding/json"
 	"errors"
@@ -13,13 +12,15 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
+const NotificationSendUrl = "http://localhost:8088/notification/send"
+
 func SendNotification(request model.NotificationRequest) error {
 	log.Info(fmt.Sprintf("Sending Request /notification/send: %v", request))
 	jsonBody, err := json.Marshal(request)
 	if err != nil {
 		return err
 	}
-	response, err := http.Post(config.NotificationSendUrl, "application/json", bytes.NewBuffer(jsonBody))
+	response, err := http.Post(NotificationSendUrl, "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		return err
 	}
