@@ -1,8 +1,10 @@
 package service
 
 import (
+	"fmt"
 	"net/http"
 
+	"rider-service/client"
 	"rider-service/model"
 	"rider-service/repository"
 
@@ -35,6 +37,19 @@ func PickUpOrder(ctx echo.Context) error {
 		return echo.ErrBadRequest
 	}
 	order, err := repository.UpdateOrderStatus(request, "picked_up")
+	if err != nil {
+		log.Error(err)
+		data := map[string]interface{}{
+			"message": err.Error(),
+		}
+		return ctx.JSON(http.StatusOK, data)
+	}
+	notificationRequest := model.NotificationRequest{
+		Recipient: "customer",
+		OrderId: request.OrderId,
+		Message: fmt.Sprintf("Order %s had been picked up by rider %s.", request.OrderId, request.RiderId),
+	}
+	err = client.SendNotification(notificationRequest)
 	if err != nil {
 		log.Error(err)
 		data := map[string]interface{}{
