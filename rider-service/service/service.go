@@ -75,5 +75,18 @@ func DeliverOrder(ctx echo.Context) error {
 		}
 		return ctx.JSON(http.StatusOK, data)
 	}
+	notificationRequest := model.NotificationRequest{
+		Recipient: "customer",
+		OrderId: request.OrderId,
+		Message: fmt.Sprintf("Order %s had been delivered by rider %s.", request.OrderId, request.RiderId),
+	}
+	err = client.SendNotification(notificationRequest)
+	if err != nil {
+		log.Error(err)
+		data := map[string]interface{}{
+			"message": err.Error(),
+		}
+		return ctx.JSON(http.StatusOK, data)
+	}
 	return ctx.JSON(http.StatusOK, map[string]string{"status": order.Status})
 }
