@@ -31,3 +31,13 @@ type RiderUpdateOrderRequest struct {
 	OrderId string `json:"order_id"`
 	RiderId string `json:"rider_id"`
 }
+
+type NotificationRequest struct {
+	Recipient string `json:"recipient"`
+	OrderId string `json:"order_id"`
+	Message string `json:"message"`
+}
+
+type NotificationResponse struct {
+	Status string `json:"status"`
+}
