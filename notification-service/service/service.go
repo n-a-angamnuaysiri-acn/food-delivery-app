@@ -21,6 +21,7 @@ func NotificationSend(ctx echo.Context) error {
 		return echo.ErrBadRequest
 	}
 	writer := config.GetWriter(request.Recipient)
+	defer writer.Close()
 	err = writer.WriteMessages(context.Background(),
 		kafka.Message{
 			Value: []byte(fmt.Sprintf("Order %s Message: %s", request.OrderId, request.Message)),
@@ -33,7 +34,6 @@ func NotificationSend(ctx echo.Context) error {
 		}
 		return ctx.JSON(http.StatusOK, data)
 	}
-	writer.Close()
 	data := map[string]string{
 		"status": "send",
 	}
