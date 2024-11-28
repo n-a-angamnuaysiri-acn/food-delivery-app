@@ -1,9 +1,11 @@
 package service
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
+	"restaurant-service/client"
 	"restaurant-service/model"
 	"restaurant-service/repository"
 
@@ -61,6 +63,20 @@ func AcceptingOrder(ctx echo.Context) error {
 		return echo.ErrBadRequest
 	}
 	order, err := repository.AcceptingOrder(request)
+	if err != nil {
+		log.Error(err)
+		data := map[string]interface{}{
+			"message": err.Error(),
+		}
+		return ctx.JSON(http.StatusOK, data)
+	}
+	orderId := fmt.Sprintf("%d", order.Id)
+	notificationRequest := model.NotificationRequest{
+		Recipient: "rider",
+		OrderId: orderId,
+		Message: fmt.Sprintf("Restaurant had accepted an order %s.", orderId),
+	}
+	err = client.SendNotification(notificationRequest)
 	if err != nil {
 		log.Error(err)
 		data := map[string]interface{}{
