@@ -57,6 +57,7 @@ func main() {
 
 	// Wait for interrupt signal to gracefully shut down the server with a timeout of 10 seconds.
 	<-ctx.Done()
+	close(doneListening) 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := app.Shutdown(ctx); err != nil {
